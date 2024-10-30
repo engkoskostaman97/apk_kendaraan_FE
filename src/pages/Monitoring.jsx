@@ -267,7 +267,6 @@ export default function Monitoring() {
                         >
                           Batal
                         </Button>
-                     
                       </div>
                     </Modal.Body>
                   </Modal>
