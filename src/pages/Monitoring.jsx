@@ -22,7 +22,9 @@ export default function Monitoring() {
   });
 
   const [idDelete, setIdDelete] = useState(null);
+  const [idUpdate, setIdUpdate] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [confirmUpdate, setConfirmUpdate] = useState(null);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -33,11 +35,29 @@ export default function Monitoring() {
     handleShow();
   };
 
+  const handleUpdate = (id) => {
+    setIdUpdate(id);
+    handleShow();
+  };
+
   const handleDeletes = () => {
     setConfirmDelete(true);
   };
 
+  const handleUpdates = () => {
+    setConfirmUpdate(true);
+  };
+
   const deleteById = useMutation(async (id) => {
+    try {
+      await API.delete("/kendaraan/" + id);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  
+  const updateById = useMutation(async (id) => {
     try {
       await API.delete("/kendaraan/" + id);
       refetch();
@@ -54,11 +74,16 @@ export default function Monitoring() {
     }
   }, [confirmDelete]);
 
+  useEffect(() => {
+    if (confirmUpdate) {
+      handleClose();
+      updateById.mutate(idUpdate);
+      setConfirmDelete(null);
+    }
+  }, [confirmUpdate]);
+
   const handleDetail = (id) => {
     navigate("/detail-data/" + id);
-  };
-  const handleUpdate = (id) => {
-    navigate("/edit-data/" + id);
   };
 
   const [filter, setFilter] = useState("");
@@ -180,6 +205,33 @@ export default function Monitoring() {
                   >
                     Edit
                   </div>
+                  <Modal show={show} onHide={handleClose} centered>
+                    <Modal.Body>
+                      <h3 className="text-center">Edite Data</h3>
+                      <div className="my-4">
+                        Anda yakin mengedit data {item?.noreg} ?
+                      </div>
+                      <div className="my-3 text-end">
+                      <Link to={"/edit-data"}>
+                        <Button
+                          variant="danger"
+                          className="me-2"
+                          style={{ width: "100px" }}
+                          onClick={handleUpdates}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          style={{ width: "100px" }}
+                          onClick={handleClose}
+                        >
+                          Batal
+                        </Button>
+                      </Link>
+                      </div>
+                    </Modal.Body>
+                  </Modal>
                   <div
                     className="text-danger pointer"
                     onClick={() => {
