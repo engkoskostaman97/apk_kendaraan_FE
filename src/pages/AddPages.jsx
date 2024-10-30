@@ -17,21 +17,32 @@ export default function AddPages() {
     fuel: "",
   });
 
+  const [error, setError] = useState(""); // State for error handling
+
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+    setError(""); // Clear error when user starts typing
   };
 
   const handleSubmit = useMutation(async (e) => {
     try {
       e.preventDefault();
+      setError(""); // Reset error state before submitting
 
-      await API.post("/kendaraan", form);
-      alert("data berhasil tersimpan");
+      const response = await API.post("/kendaraan", form);
+
+      // Assuming response contains a message if there is an error
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        alert("Data berhasil tersimpan");
+      }
     } catch (error) {
       console.log(error);
+      setError("Terjadi kesalahan, silakan coba lagi."); // Generic error message
     }
   });
 
@@ -58,7 +69,11 @@ export default function AddPages() {
                       name="noreg"
                       onChange={handleChange}
                       required
+                      isInvalid={!!error} // Mark as invalid if there's an error
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error} {/* Display the error message */}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>Nama Pemilik</Form.Label>
