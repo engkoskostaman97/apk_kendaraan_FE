@@ -249,7 +249,7 @@ export default function Monitoring() {
                         Anda yakin mengedit data {item?.noreg} ?
                       </div>
                       <div className="my-3 text-end">
-                      <Link to={"/edit-data/:noreg"}>
+                      <Link to={`/edit-data/${idUpdate}`}>
                         <Button
                           variant="danger"
                           className="me-2"
@@ -258,6 +258,7 @@ export default function Monitoring() {
                         >
                           Edit
                         </Button>
+                       </Link>
                         <Button
                           variant="secondary"
                           style={{ width: "100px" }}
@@ -265,7 +266,7 @@ export default function Monitoring() {
                         >
                           Batal
                         </Button>
-                      </Link>
+                     
                       </div>
                     </Modal.Body>
                   </Modal>
