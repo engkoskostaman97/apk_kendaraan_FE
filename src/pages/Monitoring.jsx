@@ -27,7 +27,9 @@ export default function Monitoring() {
   const [confirmUpdate, setConfirmUpdate] = useState(null);
 
   const [show, setShow] = useState(false);
+  const [showEdite, setShowEdite] = useState(false);
   const handleClose = () => setShow(false);
+  const handleCloseEdite = () => setShowEdite(false);
   const handleShow = () => setShow(true);
 
   const handleDelete = (id) => {
@@ -205,7 +207,7 @@ export default function Monitoring() {
                   >
                     Edit
                   </div>
-                  <Modal show={show} onHide={handleClose} centered>
+                  <Modal show={showEdite} onHide={handleCloseEdite} centered>
                     <Modal.Body>
                       <h3 className="text-center">Edite Data</h3>
                       <div className="my-4">
@@ -224,7 +226,7 @@ export default function Monitoring() {
                         <Button
                           variant="secondary"
                           style={{ width: "100px" }}
-                          onClick={handleClose}
+                          onClick={handleCloseEdite}
                         >
                           Batal
                         </Button>
