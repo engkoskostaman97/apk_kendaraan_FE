@@ -8,7 +8,7 @@ import {
   Modal,
   Table,
 } from "react-bootstrap";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import icon from "../assets/iconapp.svg";
 import { API } from "../config/api";
@@ -21,69 +21,33 @@ export default function Monitoring() {
     return response.data;
   });
 
+  // State untuk modal delete
   const [idDelete, setIdDelete] = useState(null);
-  const [idUpdate, setIdUpdate] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
-  const [confirmUpdate, setConfirmUpdate] = useState(null);
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => setShowDelete(false);
+  const handleShowDelete = (id) => {
+    setIdDelete(id);
+    setShowDelete(true);
+  };
 
-  const [show, setShow] = useState(false);
-  const [showEdite, setShowEdite] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleCloseEdite = () => setShowEdite(false);
-  const handleShow = () => setShow(true);
-  const handleShowUpdate = () => setShowEdite(true);
+  // State untuk modal edit konfirmasi
+  const [idEdit, setIdEdit] = useState(null);
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = (id) => {
+    setIdEdit(id);
+    setShowEdit(true);
+  };
+
+  const handleConfirmEdit = () => {
+    navigate(`/edit-data/${idEdit}`);
+    handleCloseEdit();
+  };
 
   const handleDelete = (id) => {
     setIdDelete(id);
-    handleShow();
+    handleShowDelete();
   };
-
-  const handleUpdate = (id) => {
-    setIdUpdate(id);
-    handleShowUpdate();
-  };
-
-  const handleDeletes = () => {
-    setConfirmDelete(true);
-  };
-
-  const handleUpdates = () => {
-    setConfirmUpdate(true);
-  };
-
-  const deleteById = useMutation(async (id) => {
-    try {
-      await API.delete("/kendaraan/" + id);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  
-  const updateById = useMutation(async (id) => {
-    try {
-      await API.put("/kendaraan/" + id);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
-  useEffect(() => {
-    if (confirmDelete) {
-      handleClose();
-      deleteById.mutate(idDelete);
-      setConfirmDelete(null);
-    }
-  }, [confirmDelete]);
-
-  useEffect(() => {
-    if (confirmUpdate) {
-      handleCloseEdite();
-      updateById.mutate(idUpdate);
-      setConfirmUpdate(null);
-    }
-  }, [confirmUpdate]);
 
   const handleDetail = (id) => {
     navigate("/detail-data/" + id);
@@ -113,7 +77,7 @@ export default function Monitoring() {
           </span>
           Aplikasi Data Kendaraan
         </h3>
-        <Card className=" bg-search">
+        <Card className="bg-search">
           <Card.Body>
             <Form>
               <Form.Group>
@@ -201,80 +165,76 @@ export default function Monitoring() {
                     Detail
                   </div>
                   <div
-                    className="text-primary pointer "
-                    onClick={() => {
-                      handleUpdate(item?.noreg);
-                    }}
+                    className="text-primary pointer"
+                    onClick={() => handleShowEdit(item?.noreg)}
                   >
                     Edit
                   </div>
                   <div
                     className="text-danger pointer"
-                    onClick={() => {
-                      handleDelete(item?.noreg);
-                    }}
+                    onClick={() => handleShowDelete(item?.noreg)}
                   >
                     Delete
                   </div>
-                  <Modal show={show} onHide={handleClose} centered>
-                    <Modal.Body>
-                      <h3 className="text-center">Delete Data</h3>
-                      <div className="my-4">
-                        Anda yakin menghapus data {item?.noreg} ?
-                      </div>
-                      <div className="my-3 text-end">
-                        <Button
-                          variant="danger"
-                          className="me-2"
-                          style={{ width: "100px" }}
-                          onClick={handleDeletes}
-                        >
-                          Ok
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          style={{ width: "100px" }}
-                          onClick={handleClose}
-                        >
-                          Batal
-                        </Button>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
-                  {/* modal edite */}
-                  <Modal show={showEdite} onHide={handleCloseEdite} centered>
-                    <Modal.Body>
-                      <h3 className="text-center">Edite Data</h3>
-                      <div className="my-4">
-                        Anda yakin mengedit data {item?.noreg} ?
-                      </div>
-                      <div className="my-3 text-end">
-                      <Link to={`/edit-data/${idUpdate}`}>
-
-                        <Button
-                          variant="danger"
-                          className="me-2"
-                          style={{ width: "100px" }}
-                          onClick={handleUpdates}
-                        >
-                          Edit
-                        </Button>
-                       </Link>
-                        <Button
-                          variant="secondary"
-                          style={{ width: "100px" }}
-                          onClick={handleCloseEdite}
-                        >
-                          Batal
-                        </Button>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        {/* Modal Konfirmasi Edit */}
+        <Modal show={showEdit} onHide={handleCloseEdit} centered>
+          <Modal.Body>
+            <h3 className="text-center">Edit Data</h3>
+            <div className="my-4">
+              Anda yakin ingin mengedit data {idEdit}?
+            </div>
+            <div className="my-3 text-end">
+              <Button
+                variant="primary"
+                className="me-2"
+                style={{ width: "100px" }}
+                onClick={handleConfirmEdit}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="secondary"
+                style={{ width: "100px" }}
+                onClick={handleCloseEdit}
+              >
+                Batal
+              </Button>
+            </div>
+          </Modal.Body>
+        </Modal>
+
+        {/* Modal Konfirmasi Delete */}
+        <Modal show={showDelete} onHide={handleCloseDelete} centered>
+          <Modal.Body>
+            <h3 className="text-center">Delete Data</h3>
+            <div className="my-4">
+              Anda yakin ingin menghapus data {idDelete}?
+            </div>
+            <div className="my-3 text-end">
+              <Button
+                variant="danger"
+                className="me-2"
+                style={{ width: "100px" }}
+                onClick={() => console.log("Data deleted")} // Atur sesuai fungsi delete
+              >
+                Ok
+              </Button>
+              <Button
+                variant="secondary"
+                style={{ width: "100px" }}
+                onClick={handleCloseDelete}
+              >
+                Batal
+              </Button>
+            </div>
+          </Modal.Body>
+        </Modal>
       </Container>
     </div>
   );
