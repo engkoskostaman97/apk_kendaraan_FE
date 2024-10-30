@@ -80,7 +80,7 @@ export default function Monitoring() {
     if (confirmUpdate) {
       handleClose();
       updateById.mutate(idUpdate);
-      setConfirmDelete(null);
+      setConfirmUpdate(null);
     }
   }, [confirmUpdate]);
 
