@@ -207,33 +207,6 @@ export default function Monitoring() {
                   >
                     Edit
                   </div>
-                  <Modal show={showEdite} onHide={handleCloseEdite} centered>
-                    <Modal.Body>
-                      <h3 className="text-center">Edite Data</h3>
-                      <div className="my-4">
-                        Anda yakin mengedit data {item?.noreg} ?
-                      </div>
-                      <div className="my-3 text-end">
-                      <Link to={"/edit-data"}>
-                        <Button
-                          variant="danger"
-                          className="me-2"
-                          style={{ width: "100px" }}
-                          onClick={handleUpdates}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          style={{ width: "100px" }}
-                          onClick={handleCloseEdite}
-                        >
-                          Batal
-                        </Button>
-                      </Link>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
                   <div
                     className="text-danger pointer"
                     onClick={() => {
@@ -264,6 +237,34 @@ export default function Monitoring() {
                         >
                           Batal
                         </Button>
+                      </div>
+                    </Modal.Body>
+                  </Modal>
+                  {/* modal edite */}
+                  <Modal show={showEdite} onHide={handleCloseEdite} centered>
+                    <Modal.Body>
+                      <h3 className="text-center">Edite Data</h3>
+                      <div className="my-4">
+                        Anda yakin mengedit data {item?.noreg} ?
+                      </div>
+                      <div className="my-3 text-end">
+                      <Link to={"/edit-data"}>
+                        <Button
+                          variant="danger"
+                          className="me-2"
+                          style={{ width: "100px" }}
+                          onClick={handleUpdates}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          style={{ width: "100px" }}
+                          onClick={handleCloseEdite}
+                        >
+                          Batal
+                        </Button>
+                      </Link>
                       </div>
                     </Modal.Body>
                   </Modal>
