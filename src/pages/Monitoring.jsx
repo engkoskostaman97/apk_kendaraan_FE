@@ -78,7 +78,7 @@ export default function Monitoring() {
 
   useEffect(() => {
     if (confirmUpdate) {
-      handleClose();
+      handleCloseEdite();
       updateById.mutate(idUpdate);
       setConfirmUpdate(null);
     }
@@ -260,7 +260,7 @@ export default function Monitoring() {
                         <Button
                           variant="secondary"
                           style={{ width: "100px" }}
-                          onClick={handleCloseEdite}
+                          onClick={handleClose}
                         >
                           Batal
                         </Button>
