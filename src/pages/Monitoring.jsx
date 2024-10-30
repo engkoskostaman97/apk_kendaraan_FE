@@ -62,7 +62,7 @@ export default function Monitoring() {
   
   const updateById = useMutation(async (id) => {
     try {
-      await API.delete("/kendaraan/" + id);
+      await API.put("/kendaraan/" + id);
       refetch();
     } catch (error) {
       console.log(error);
@@ -250,6 +250,7 @@ export default function Monitoring() {
                       </div>
                       <div className="my-3 text-end">
                       <Link to={`/edit-data/${idUpdate}`}>
+
                         <Button
                           variant="danger"
                           className="me-2"
