@@ -31,6 +31,7 @@ export default function Monitoring() {
   const handleClose = () => setShow(false);
   const handleCloseEdite = () => setShowEdite(false);
   const handleShow = () => setShow(true);
+  const handleShowUpdate = () => setShowEdite(true);
 
   const handleDelete = (id) => {
     setIdDelete(id);
@@ -39,7 +40,7 @@ export default function Monitoring() {
 
   const handleUpdate = (id) => {
     setIdUpdate(id);
-    handleShow();
+    handleShowUpdate();
   };
 
   const handleDeletes = () => {
