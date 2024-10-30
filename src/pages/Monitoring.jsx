@@ -249,7 +249,7 @@ export default function Monitoring() {
                         Anda yakin mengedit data {item?.noreg} ?
                       </div>
                       <div className="my-3 text-end">
-                      <Link to={"/edit-data"}>
+                      <Link to={"/edit-data/:noreg"}>
                         <Button
                           variant="danger"
                           className="me-2"
@@ -261,7 +261,7 @@ export default function Monitoring() {
                         <Button
                           variant="secondary"
                           style={{ width: "100px" }}
-                          onClick={handleClose}
+                          onClick={handleCloseEdite}
                         >
                           Batal
                         </Button>
