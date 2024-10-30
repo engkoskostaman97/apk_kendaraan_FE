@@ -42,7 +42,7 @@ export default function AddPages() {
       }
     } catch (error) {
       console.log(error);
-      setError("Terjadi kesalahan, silakan coba lagi."); // Generic error message
+      setError("Nomor register sudah ada "); // Generic error message
     }
   });
 
