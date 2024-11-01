@@ -21,6 +21,7 @@ export default function Monitoring() {
     return response.data;
   });
 
+  // State untuk modal delete
   const [idDelete, setIdDelete] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
@@ -29,14 +30,34 @@ export default function Monitoring() {
     setShowDelete(true);
   };
 
-  const handleDelete = async () => {
+  // Fungsi untuk menghapus data kendaraan
+  const deleteData = async () => {
     try {
       await API.delete(`/kendaraan/${idDelete}`);
-      refetch();
+      refetch(); // Refresh data setelah delete
       handleCloseDelete();
     } catch (error) {
-      console.error("Error deleting data:", error);
+      console.error("Gagal menghapus data:", error);
     }
+  };
+
+  // State untuk modal edit konfirmasi
+  const [idEdit, setIdEdit] = useState(null);
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = (id) => {
+    setIdEdit(id);
+    setShowEdit(true);
+  };
+
+  const handleConfirmEdit = () => {
+    navigate(`/edit-data/${idEdit}`);
+    handleCloseEdit();
+  };
+
+  const handleDelete = (id) => {
+    setIdDelete(id);
+    handleShowDelete();
   };
 
   const handleDetail = (id) => {
@@ -172,6 +193,33 @@ export default function Monitoring() {
           </tbody>
         </Table>
 
+        {/* Modal Konfirmasi Edit */}
+        <Modal show={showEdit} onHide={handleCloseEdit} centered>
+          <Modal.Body>
+            <h3 className="text-center">Edit Data</h3>
+            <div className="my-4">
+              Anda yakin ingin mengedit data {idEdit}?
+            </div>
+            <div className="my-3 text-end">
+              <Button
+                variant="primary"
+                className="me-2"
+                style={{ width: "100px" }}
+                onClick={handleConfirmEdit}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="secondary"
+                style={{ width: "100px" }}
+                onClick={handleCloseEdit}
+              >
+                Batal
+              </Button>
+            </div>
+          </Modal.Body>
+        </Modal>
+
         {/* Modal Konfirmasi Delete */}
         <Modal show={showDelete} onHide={handleCloseDelete} centered>
           <Modal.Body>
@@ -184,7 +232,7 @@ export default function Monitoring() {
                 variant="danger"
                 className="me-2"
                 style={{ width: "100px" }}
-                onClick={handleDelete}
+                onClick={deleteData} // Memanggil fungsi deleteData untuk menghapus data
               >
                 Ok
               </Button>
